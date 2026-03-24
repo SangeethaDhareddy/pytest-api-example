@@ -1,0 +1,16 @@
+Bug 1: Broken error message formatting in /pets/findByStatus
+In the app, this line is wrong:
+    api.abort(400, 'Invalid pet status {status}')
+It should be:
+    api.abort(400, f"Invalid pet status {status}")
+Right now it returns the literal text {status} instead of the actual value.
+
+
+Bug 2: PATCH assumes "status" always exists
+This line:
+    order['status'] = update_data['status']
+Will raise a server error if the client sends {}. The API should validate that field before using it.
+
+
+Bug 3: No GET endpoint for order lookup
+You can create and patch orders, but there is no endpoint to fetch an order by ID. That limits test coverage and makes verification indirect.
